@@ -13,6 +13,17 @@ export default class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (parsedContacts) this.setState({ contacts: parsedContacts });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts.length !== this.state.contacts.length) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   onFormSubmit = ({ name, number }) => {
     const { contacts } = this.state;
     const normalizedName = name.toLowerCase();
